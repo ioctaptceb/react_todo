@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+
+    <meta charset="UTF-8" />
+
+    <script src="https://fb.me/react-0.14.7.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+
+  </head>
+  <body>
+
+    <div id="header"></div>
+    <div id="list"></div>
+    <div id="button"></div>
+
+    <script type="text/babel">
+      var Hello = React.createClass({
+        render: function() {
+          return (
+            <p>
+              Hello, 
+              The current time is... {this.props.date.toTimeString()}
+            </p>
+          );
+        }
+      });
+
+      var AddTask = React.createClass({
+        getInitialState: function () {
+          return {clicked: false};
+        },
+        handleClick: function (event) {
+          this.setState({clicked:  !this.state.clicked});
+        },
+        render: function() {
+          var test = this.state.clicked ? 'clicked' : 'haven\'t clicked';
+          return (
+            <button onClick={this.handleClick}>
+              You {test} this.
+            </button>
+          );
+        }
+      });
+
+      var ListItem = React.createClass({
+        render: function () {
+          return <li>{this.props.data.text}</li>;
+        }
+      });
+
+      var List = React.createClass({
+        task: function () {
+          var task = [{text: 'blah', id: 'meh'}, {text:'blarsd', id:'fe'}];
+          return {task}
+        },
+        render: function () {
+          return (
+            <ul>
+              {this.task.map( function (task) {
+                return <ListItem key={task.id} data={task}/>
+              })}
+            </ul>
+          );
+        }
+      });
+
+      setInterval(function () {
+        ReactDOM.render(<Hello date={new Date()} />,
+        document.getElementById('header')
+        );
+      }, 500);
+
+      ReactDOM.render(<AddTask/>, 
+      document.getElementById('button')
+      );
+      ReactDOM.render(<List/>, 
+      document.getElementById('list')
+      );
+    </script>
+  </body>
+</html>

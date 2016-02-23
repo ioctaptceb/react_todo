@@ -1,0 +1,31 @@
+{
+  "name": "react_todo",
+  "version": "1.0.0",
+  "description": "react todo app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ioctaptceb/react_todo.git"
+  },
+  "keywords": [
+    "react",
+    "todo"
+  ],
+  "author": "ioctaptceb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ioctaptceb/react_todo/issues"
+  },
+  "homepage": "https://github.com/ioctaptceb/react_todo#readme",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "react": "^0.14.7",
+    "webpack": "^1.12.14"
+  },
+  "devDependencies": {
+    "eslint": "^2.2.0"
+  }
+}
