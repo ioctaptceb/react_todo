@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ioctaptceb/react_todo#readme",
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "gulp": "^3.9.1",
     "react": "^0.14.7",
     "webpack": "^1.12.14"

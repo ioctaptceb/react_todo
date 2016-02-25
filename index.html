@@ -5,64 +5,97 @@
 
     <meta charset="UTF-8" />
 
+    <link rel='stylesheet' type='text/css' href='./node_modules/bootstrap/dist/css/bootstrap.css'>
+    <link rel='stylesheet' type='text/css' href='./node_modules/bootstrap/dist/css/bootstrap-theme.css'>
+    <link rel='stylesheet' type='text/css' href='./app/index.css'>
+
     <script src="https://fb.me/react-0.14.7.js"></script>
     <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <script src="https://www.google.com/jsapi"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
 
+    <script src="./app/index.js"></script>
   </head>
   <body>
 
-    <div id="header"></div>
-    <div id="list"></div>
-    <div id="button"></div>
+    <div style='text-align: center'>
+      <div class='skulls'></div>
+      <div id="header"></div>
+      <div id="list" style='display: inline-block; width: 50%'></div>
+    </div>
 
     <script type="text/babel">
+
       var Hello = React.createClass({
         render: function() {
           return (
-            <p>
-              Hello, 
-              The current time is... {this.props.date.toTimeString()}
-            </p>
+            <div>
+              <p>
+                Hello, fellow grimmy. Welcome to the land of the dead!
+              </p><p>
+                The current time is... {this.props.date.toLocaleTimeString()}
+              </p>
+              </div>
           );
         }
       });
 
-      var AddTask = React.createClass({
+      var AddZombie = React.createClass({
         getInitialState: function () {
-          return {clicked: false};
+          return {clicked: false, value: ''};
         },
         handleClick: function (event) {
-          this.setState({clicked:  !this.state.clicked});
+          this.props.zombies.add(this.state.value)
+          this.setState({clicked:  true});
+        },
+        handleChange: function (event) {
+          this.setState({value: event.target.value});
         },
         render: function() {
-          var test = this.state.clicked ? 'clicked' : 'haven\'t clicked';
+          var test = this.state.clicked ? 'woke up' : 'haven\'t woken up';
           return (
-            <button onClick={this.handleClick}>
-              You {test} this.
+            <div>
+            <input type='text' placeholder='add a friend!' className='form-control' value={this.state.value} onChange={this.handleChange}/>
+            <button className='btn btn-default btn-block' onClick={this.handleClick}>
+              You {test} a friend!.
             </button>
+            </div>
           );
         }
       });
 
       var ListItem = React.createClass({
+        handleClick: function (event) {
+          console.log(this.props.zombie, event);
+          this.props.zombies.remove(this.props.zombie.id)
+        },
         render: function () {
-          return <li>{this.props.data.text}</li>;
+         return (
+         <li>
+           <span className={this.props.zombie.portrait}></span>
+           <span className='zombie-name'>{this.props.zombie.name}</span>
+           <button className='btn btn-default remove' onClick={this.handleClick}>
+             <span className='glyphicon glyphicon-remove'>
+          </span></button></li>
+        )
         }
       });
 
       var List = React.createClass({
-        task: function () {
-          var task = [{text: 'blah', id: 'meh'}, {text:'blarsd', id:'fe'}];
-          return {task}
-        },
         render: function () {
+          var vm = this;
           return (
-            <ul>
-              {this.task.map( function (task) {
-                return <ListItem key={task.id} data={task}/>
-              })}
-            </ul>
+            <div>
+              <AddZombie zombies={this.props.zombies} />
+              <h4>
+                Friends so far... {this.props.zombies.dudelings.length}
+              </h4>
+              <ul>
+                {this.props.zombies.dudelings.map( function (dudeling) {
+                  return <ListItem key={dudeling.id} zombie={dudeling} zombies={vm.props.zombies}/>
+                })}
+              </ul>
+            </div>
           );
         }
       });
@@ -73,12 +106,16 @@
         );
       }, 500);
 
-      ReactDOM.render(<AddTask/>, 
-      document.getElementById('button')
-      );
-      ReactDOM.render(<List/>, 
-      document.getElementById('list')
-      );
+      var MyZombies = new app.ZombieModel();
+      MyZombies.subscribe(render);
+
+      function render() {
+        ReactDOM.render(<List zombies={MyZombies}/>,
+          document.getElementById('list')
+        );
+      }
+
+      render();
     </script>
   </body>
 </html>
